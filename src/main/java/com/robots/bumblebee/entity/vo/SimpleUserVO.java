@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class SimpleUserVO {
 
     @ApiModelProperty(value = "用户id", example = "1")
-    private int userId;
+    private long userId;
 
     @ApiModelProperty(value = "用户名")
     private String userName;
@@ -19,11 +19,11 @@ public class SimpleUserVO {
     @ApiModelProperty(value = "用户头像地址")
     private String userImageUrl;
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
