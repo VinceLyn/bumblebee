@@ -37,16 +37,17 @@ public class SwaggerConfig {
     public Docket createRestApi() {
         ParameterBuilder ticketPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
-        ticketPar.name(tokenHeader).description("token")
+
+        pars.add(ticketPar.name(tokenHeader).description("token")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
                 .defaultValue(tokenStartWith + " ")
                 .required(true)
-                .build();
-        pars.add(ticketPar.build());
+                .build());
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .globalOperationParameters(pars)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.robots.bumblebee.login"))
                 .paths(PathSelectors.any())
@@ -55,7 +56,7 @@ public class SwaggerConfig {
 
     /**
      * 创建该API的基本信息（这些基本信息会展现在文档页面中）
-     * 访问地址：http://项目实际地址/swagger-ui.html
+     * 访问地址：http://127.0.0.1/swagger-ui.html
      * @return
      */
     private ApiInfo apiInfo() {

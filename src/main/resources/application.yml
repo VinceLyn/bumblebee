@@ -1,0 +1,8 @@
+server:
+  port: 8082
+
+#jwt
+jwt:
+  header: Authorization
+  # 令牌前缀
+  token-start-with: Bearer
