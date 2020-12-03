@@ -1,5 +1,12 @@
 package com.robots.bumblebee.security;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.common.base.Strings;
+import com.robots.bumblebee.entity.db.User;
+import com.robots.bumblebee.login.JWTService;
+import com.robots.bumblebee.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,6 +19,10 @@ import java.lang.reflect.Method;
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Value("${jwt.header}")
     private String header;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private JWTService jwtService;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
@@ -29,35 +40,23 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-        //检查有没有需要用户权限的注解
-//        if (method.isAnnotationPresent(UserLoginToken.class)) {
-//            UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
-//            if (userLoginToken.required()) {
-//                // 执行认证
-//                if (token == null) {
-//                    throw new RuntimeException("无token，请重新登录");
-//                }
-//                // 获取 token 中的 user id
-//                String userId;
-//                try {
-//                    userId = JWT.decode(token).getAudience().get(0);
-//                } catch (JWTDecodeException j) {
-//                    throw new RuntimeException("401");
-//                }
-//                User user = userService.findUserById(userId);
-//                if (user == null) {
-//                    throw new RuntimeException("用户不存在，请重新登录");
-//                }
-//                // 验证 token
-//                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
-//                try {
-//                    jwtVerifier.verify(token);
-//                } catch (JWTVerificationException e) {
-//                    throw new RuntimeException("401");
-//                }
-//                return true;
-//            }
-//        }
+        // 执行认证
+        if (Strings.isNullOrEmpty(token)) {
+            throw new RuntimeException("无token，请重新登录");
+        }
+        // 验证 token
+        DecodedJWT decodedJWT;
+        try {
+            decodedJWT = jwtService.verifyToken(token);
+        } catch (JWTVerificationException e) {
+            throw new RuntimeException("401");
+        }
+        long userId = decodedJWT.getClaim("account").asLong();
+        User user = userService.getUser(userId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在，请重新登录");
+        }
+        httpServletRequest.setAttribute("user", user);
         return true;
     }
 

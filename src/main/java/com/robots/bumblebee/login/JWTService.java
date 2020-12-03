@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class JWTService {
     private JWTVerifier verifier = JWT.require(Algorithm.HMAC256("sec9527")).withIssuer("server1").build();
 
-    public String createToken(String user){
+    public String createToken(String account){
         String secret = "sec9527";
         Algorithm alg = Algorithm.HMAC256(secret);
         //头部信息
@@ -33,7 +33,7 @@ public class JWTService {
                 .withAudience("humblebee")
                 .withIssuedAt(nowDate)
                 .withExpiresAt(expireDate)
-                .withClaim("user",user)
+                .withClaim("account",account)
                 .sign(alg);
         return sign;
     }
