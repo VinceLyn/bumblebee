@@ -2,7 +2,6 @@ package com.robots.bumblebee.entity.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
 
 /**
  * @author yichengdong
@@ -11,8 +10,6 @@ import lombok.*;
 @ApiModel("ArticleVO-帖子VO")
 public class ArticleVO {
 
-    @Getter
-    @Setter
     @ApiModelProperty(value = "帖子id",example = "1")
     private int id;
 

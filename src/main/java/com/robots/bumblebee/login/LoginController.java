@@ -2,18 +2,22 @@ package com.robots.bumblebee.login;
 
 import com.robots.bumblebee.entity.db.User;
 import com.robots.bumblebee.service.UserService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@Api(value = "简书-演示",description = "用来演示Swagger的一些注解")
 
+@Api(tags = "注冊-登录")
+@RestController("/user/")
 public class LoginController{
     private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
@@ -21,20 +25,29 @@ public class LoginController{
     @Autowired
     private UserService userService;
 
-    @ApiOperation(value="登录", notes="登录")
+    @PostMapping("register")
+    @ApiOperation(value="注册")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "account", value = "账号", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "pwd", value = "密码", required = true, dataType = "String")
+            @ApiImplicitParam(name = "pwd", value = "密码", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "confirmPwd", value = "确认密码", required = true, dataType = "String")
     })
-    @ApiResponses({
-            @ApiResponse(code = 400, message = "请求参数没填好"),
-            @ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对")
+    public ResponseEntity<String> register(@RequestParam(value="account") String account,
+                                           @RequestParam(value="pwd") String pwd,
+                                           @RequestParam(value = "confirmPwd") String confirmPwd){
+        return ResponseEntity.ok("注册成功");
+    }
+
+    @ApiOperation(value="登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "account", value = "账号", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "account", value = "account", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "pwd", value = "密码", required = true, dataType = "String")
     })
     @GetMapping("/login")
     public ResponseEntity<Object> login(@RequestParam(value="account") String account, @RequestParam(value="pwd") String pwd){
         String token = jwtService.createToken(account);
         User userByName = userService.getUserByAccount(account);
-
         return ResponseEntity.ok(token);
     }
 

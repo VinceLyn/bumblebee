@@ -49,7 +49,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .globalOperationParameters(pars)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.robots.bumblebee.login"))
+                .apis(RequestHandlerSelectors.basePackage("com.robots.bumblebee"))
                 .paths(PathSelectors.any())
                 .build();
     }
