@@ -6,6 +6,8 @@ import com.robots.bumblebee.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,7 +19,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(long id) {
-        return userRepository.getOne(id);
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        throw new RuntimeException("用户不存在！");
     }
 
     @Override
@@ -29,4 +35,5 @@ public class UserServiceImpl implements UserService {
     public void save(User user){
         userRepository.save(user);
     }
+
 }

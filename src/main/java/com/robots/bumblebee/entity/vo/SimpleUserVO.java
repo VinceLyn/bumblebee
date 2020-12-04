@@ -8,28 +8,28 @@ import io.swagger.annotations.ApiModelProperty;
 public class SimpleUserVO {
 
     @ApiModelProperty(value = "用户id")
-    private long userId;
+    private long id;
 
-    @ApiModelProperty(value = "用户名")
-    private String userName;
+    @ApiModelProperty(value = "用戶账号")
+    private String account;
 
     @ApiModelProperty(value = "用户头像地址")
     private String userImageUrl;
 
-    public long getUserId() {
-        return userId;
+    public long getId() {
+        return id;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getUserImageUrl() {

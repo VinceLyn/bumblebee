@@ -8,10 +8,10 @@ import io.swagger.annotations.ApiModelProperty;
 public class ArticleVO {
 
     @ApiModelProperty(value = "帖子id")
-    private int id;
+    private String id;
 
     @ApiModelProperty(value = "创建时间")
-    private String createdAt;
+    private long ctime;
 
     @ApiModelProperty(value = "标题")
     private String title;
@@ -20,10 +20,10 @@ public class ArticleVO {
     private String topic;
 
     @ApiModelProperty(value = "正文")
-    private String content;
+    private String text;
 
     @ApiModelProperty(value = "转发来源")
-    private String source;
+    private String sid;
 
     @ApiModelProperty(value = "浏览次数",example = "1")
     private int viewCount;
@@ -39,22 +39,6 @@ public class ArticleVO {
 
     @ApiModelProperty(value = "用戶信息")
     private SimpleUserVO simpleUserVO;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
 
     public String getTitle() {
         return title;
@@ -72,21 +56,6 @@ public class ArticleVO {
         this.topic = topic;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
 
     public int getViewCount() {
         return viewCount;
@@ -126,5 +95,39 @@ public class ArticleVO {
 
     public void setSimpleUserVO(SimpleUserVO simpleUserVO) {
         this.simpleUserVO = simpleUserVO;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    public long getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(long ctime) {
+        this.ctime = ctime;
     }
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class JWTService {
     private JWTVerifier verifier = JWT.require(Algorithm.HMAC256("sec9527")).withIssuer("server1").build();
 
-    public String createToken(String account){
+    public String createToken(Long account){
         String secret = "sec9527";
         Algorithm alg = Algorithm.HMAC256(secret);
         //头部信息
@@ -24,9 +24,8 @@ public class JWTService {
         map.put("typ","JWT");
 
         Date nowDate = new Date();
-        Date expireDate = new Date(nowDate.getTime()+ TimeUnit.SECONDS.toMinutes(5)*1000);
-
-        String sign = JWT.create()
+        Date expireDate = new Date(nowDate.getTime()+ 5*60*60*1000);
+              String sign = JWT.create()
                 .withHeader(map)
                 .withIssuer("server1")
                 .withSubject("sub1")
