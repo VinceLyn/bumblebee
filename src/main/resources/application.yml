@@ -20,3 +20,7 @@ spring:
       ddl-auto: update
     #输出执行sql
     show-sql: true
+  data:
+    mongodb:
+      uri: mongodb://admin:123456@10.16.34.179:27017/bee?authSource=admin&&authMechanism=SCRAM-SHA-1
+

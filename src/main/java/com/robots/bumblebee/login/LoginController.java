@@ -1,6 +1,8 @@
 package com.robots.bumblebee.login;
 
+import com.robots.bumblebee.entity.db.ArticleEntity;
 import com.robots.bumblebee.entity.db.User;
+import com.robots.bumblebee.security.SkipToken;
 import com.robots.bumblebee.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -9,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,8 @@ public class LoginController{
     private JWTService jwtService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @PostMapping("register")
     @ApiOperation(value="注册")
@@ -45,9 +50,16 @@ public class LoginController{
             @ApiImplicitParam(name = "pwd", value = "密码", required = true, dataType = "String")
     })
     @GetMapping("/login")
+    @SkipToken(required = true)
     public ResponseEntity<Object> login(@RequestParam(value="account") String account, @RequestParam(value="pwd") String pwd){
         String token = jwtService.createToken(account);
         User userByName = userService.getUserByAccount(account);
+        ArticleEntity e = new ArticleEntity();
+//        e.setName("namee");
+        e.setId(22111l);
+        e.setContext("bbbb");
+        e.setTitle("titttle标题");
+        mongoTemplate.save(e);
         return ResponseEntity.ok(token);
     }
 

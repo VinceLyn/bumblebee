@@ -33,6 +33,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod = (HandlerMethod) object;
         Method method = handlerMethod.getMethod();
+        if(method.getName().equalsIgnoreCase("error")||
+                method.getName().equalsIgnoreCase("uiConfiguration")||
+                method.getName().equalsIgnoreCase("securityConfiguration")||
+                method.getName().equalsIgnoreCase("swaggerResources")){
+            return true;
+        }
         //检查是否有passtoken注释，有则跳过认证
         if (method.isAnnotationPresent(SkipToken.class)) {
             SkipToken skipToken = method.getAnnotation(SkipToken.class);
