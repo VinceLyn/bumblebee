@@ -3,14 +3,11 @@ package com.robots.bumblebee.entity.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-/**
- * @author yichengdong
- * @date 2020/12/3
- */
-@ApiModel("ArticleVO-帖子VO")
+
+@ApiModel(description="帖子VO")
 public class ArticleVO {
 
-    @ApiModelProperty(value = "帖子id",example = "1")
+    @ApiModelProperty(value = "帖子id")
     private int id;
 
     @ApiModelProperty(value = "创建时间")

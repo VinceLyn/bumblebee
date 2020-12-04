@@ -3,20 +3,17 @@ package com.robots.bumblebee.entity.request;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-/**
- * @author yichengdong
- * @date 2020/12/3
- */
+
 @ApiModel("新建帖子po")
 public class Article {
 
-    @ApiModelProperty(value = "标题" ,required = true,example = "")
+    @ApiModelProperty(value = "标题" ,required = true)
     private String title;
 
-    @ApiModelProperty(value = "正文内容",required = true,example = "")
+    @ApiModelProperty(value = "正文内容",required = true)
     private String content;
 
-    @ApiModelProperty(value = "话题",example = "")
+    @ApiModelProperty(value = "话题")
     private String topic;
 
     @ApiModelProperty(value = "所属圈子类型id",required = true,example = "1")

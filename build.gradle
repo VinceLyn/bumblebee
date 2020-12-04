@@ -20,8 +20,9 @@ dependencies {
 	implementation 'mysql:mysql-connector-java'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.projectlombok:lombok:1.18.12'
-	implementation("com.google.guava:guava:30.0-jre")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	implementation("com.google.guava:guava:30.0-jre")
+	implementation 'junit:junit:4.12'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

@@ -1,24 +1,30 @@
 package com.robots.bumblebee.controller;
 
+import com.google.common.collect.Lists;
 import com.robots.bumblebee.entity.request.Article;
 import com.robots.bumblebee.entity.vo.ArticleVO;
+import com.robots.bumblebee.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 帖子控制器
- *
- * @author yichengdong
- * @date 2020/12/3
  */
 @Api(tags = "帖子")
 @RestController
 @RequestMapping("/statuses/")
 public class ArticleController {
+
+
+    @Autowired
+    private ArticleService articleService;
 
 
     @GetMapping("get_articles")
@@ -28,10 +34,22 @@ public class ArticleController {
             @ApiImplicitParam(name = "pageSize", value = "页面大小", required = true, dataType = "int", example = "10"),
             @ApiImplicitParam(name = "sortType", value = "排序类型(1:根据发布时间排序；2:根据点赞数排序)", required = true, dataType = "int", example = "10")
     })
-    public ResponseEntity<ArticleVO> getArticles(@RequestParam(value = "pageNum") Integer pageNum,
+    public ResponseEntity<List<ArticleVO>> getArticles(@RequestParam(value = "pageNum") Integer pageNum,
                                                  @RequestParam(value = "pageSize") Integer pageSize,
                                                  @RequestParam(value = "sortType") Integer sortType) {
-        return ResponseEntity.ok(new ArticleVO());
+        List<Long> uidList = Lists.newArrayList();
+        List<ArticleVO> articleVOList = articleService.getArticles(pageNum,pageSize,uidList);
+        return ResponseEntity.ok(articleVOList);
+    }
+
+    @GetMapping("show")
+    @ApiOperation(value = "根据帖子id获取单条帖内容", response = ArticleVO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "帖子id", required = true, dataType = "int", example = "1")
+    })
+    public ResponseEntity<ArticleVO> show(@RequestParam(value = "id") Integer id) {
+        ArticleVO articleVO = articleService.show(id);
+        return ResponseEntity.ok(articleVO);
     }
 
     @PostMapping("publish_article")
@@ -49,6 +67,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "typeId", value = "转发到的圈子类型", required = true, dataType = "int",example = "1")
     })
     public ResponseEntity<String> repost(Integer id, String content, Integer typeId) {
+
         return ResponseEntity.ok("转发成功！");
     }
 

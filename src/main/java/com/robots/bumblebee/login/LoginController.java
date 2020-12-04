@@ -31,15 +31,15 @@ public class LoginController{
     private MongoTemplate mongoTemplate;
 
     @PostMapping("register")
-    @ApiOperation(value="注册")
+    @ApiOperation(value = "注册")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "account", value = "账号", required = true, dataType = "String"),
             @ApiImplicitParam(name = "pwd", value = "密码", required = true, dataType = "String"),
             @ApiImplicitParam(name = "confirmPwd", value = "确认密码", required = true, dataType = "String")
     })
-    public ResponseEntity<String> register(@RequestParam(value="account") String account,
-                                           @RequestParam(value="pwd") String pwd,
-                                           @RequestParam(value = "confirmPwd") String confirmPwd){
+    public ResponseEntity<String> register(@RequestParam(value = "account") String account,
+                                           @RequestParam(value = "pwd") String pwd,
+                                           @RequestParam(value = "confirmPwd") String confirmPwd) {
         return ResponseEntity.ok("注册成功");
     }
 
@@ -56,8 +56,7 @@ public class LoginController{
         User userByName = userService.getUserByAccount(account);
         ArticleEntity e = new ArticleEntity();
 //        e.setName("namee");
-        e.setId(22111l);
-        e.setContext("bbbb");
+        e.setText("bbbb");
         e.setTitle("titttle标题");
         mongoTemplate.save(e);
         return ResponseEntity.ok(token);
