@@ -19,7 +19,6 @@ class ArticleRepositoryTest extends BaseTest {
     @Test
     void save() {
         ArticleEntity entity = new ArticleEntity();
-        entity.setUid("asdqw");
         entity.setTitle("test");
         entity.setText("text");
         articleRepository.save(entity);
@@ -40,9 +39,9 @@ class ArticleRepositoryTest extends BaseTest {
 
     @Test
     public void findByPage(){
-        List<Long> uidList = Lists.newArrayList();
-        uidList.add(11L);
-        uidList.add(12L);
+        List<String> uidList = Lists.newArrayList();
+        uidList.add("11");
+        uidList.add("12");
         List<ArticleEntity> result = articleRepository.findByPage(1, 2,uidList);
         assertNotEquals(result.size(),0);
     }

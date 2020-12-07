@@ -17,14 +17,14 @@ class LikeRepositoryTest extends BaseTest {
     void like() {
         String aid = "5fcd95913803f1218c431c61111";
         String uid = "1";
-        likeRepository.updateOrInsert(aid,uid);
+        likeRepository.like(aid,uid);
     }
 
     @Test
     void unLike() {
         String aid = "11111";
         String uid = "2";
-        likeRepository.update(aid,uid);
+        likeRepository.unlike(aid,uid);
     }
 
     @Test

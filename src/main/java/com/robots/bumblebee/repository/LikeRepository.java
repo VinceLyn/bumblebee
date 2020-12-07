@@ -5,9 +5,9 @@ import com.robots.bumblebee.entity.db.LikeEntity;
 
 public interface LikeRepository {
 
-    void updateOrInsert(String aid, String uid);
+    void like(String aid, String uid);
 
-    void update(String aid, String uid);
+    void unlike(String aid, String uid);
 
     boolean isExist(String aid, String uid);
 

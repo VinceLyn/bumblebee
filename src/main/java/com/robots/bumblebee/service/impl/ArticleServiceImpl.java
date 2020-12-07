@@ -9,6 +9,7 @@ import com.robots.bumblebee.entity.vo.ArticleVO;
 import com.robots.bumblebee.entity.vo.SimpleUserVO;
 import com.robots.bumblebee.repository.ArticleRepository;
 import com.robots.bumblebee.repository.LikeRepository;
+import com.robots.bumblebee.repository.UserRepository;
 import com.robots.bumblebee.service.ArticleService;
 import com.robots.bumblebee.service.UserService;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,6 +28,8 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleRepository articleRepository;
     @Autowired
     private LikeRepository likeRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -78,23 +82,21 @@ public class ArticleServiceImpl implements ArticleService {
     public List<SimpleUserVO> getLikes(String id) {
         LikeEntity likeEntity = likeRepository.findByAid(id);
         Set<String> userIdSet = likeEntity.getUids();
-        List<SimpleUserVO> simpleUserVOList = Lists.newArrayList();
-        userIdSet.forEach(userId -> {
-            UserEntity user = userService.getUser(userId);
+        List<UserEntity> userEntityList = userRepository.findByIds(userIdSet);
+        return userEntityList.stream().map(userEntity -> {
             SimpleUserVO simpleUserVO = new SimpleUserVO();
-            BeanUtils.copyProperties(user, simpleUserVO);
-            simpleUserVOList.add(simpleUserVO);
-        });
-        return simpleUserVOList;
+            BeanUtils.copyProperties(userEntity, simpleUserVO);
+            return simpleUserVO;
+        }).collect(Collectors.toList());
     }
 
     @Override
     public void like(String aid, String curUserId) {
-        likeRepository.updateOrInsert(aid, curUserId);
+        likeRepository.like(aid, curUserId);
     }
 
     @Override
     public void unlike(String aid, String curUserId) {
-        likeRepository.update(aid, curUserId);
+        likeRepository.unlike(aid, curUserId);
     }
 }

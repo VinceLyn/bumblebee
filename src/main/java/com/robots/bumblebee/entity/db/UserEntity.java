@@ -7,11 +7,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import javax.persistence.Id;
 
-@Document("user")
+
+@Document("userEntity")
 @Data
 public class UserEntity extends AbstractEntity {
-    @MongoId(value = FieldType.OBJECT_ID)
+    @Id
     private String id;
 
     @Field(name = "account")

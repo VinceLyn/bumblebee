@@ -18,7 +18,7 @@ public class LikeRepositoryImpl implements LikeRepository {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public void updateOrInsert(String aid, String uid) {
+    public void like(String aid, String uid) {
         Query query = new Query();
         query.addCriteria(Criteria.where("aid").is(aid));
         Update update = new Update();
@@ -33,7 +33,7 @@ public class LikeRepositoryImpl implements LikeRepository {
     }
 
     @Override
-    public void update(String aid, String uid) {
+    public void unlike(String aid, String uid) {
         Query query = new Query();
         query.addCriteria(Criteria.where("aid").is(aid));
         Update update = new Update();

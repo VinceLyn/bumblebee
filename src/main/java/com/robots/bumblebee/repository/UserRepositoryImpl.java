@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Set;
+
 @Repository
 public class UserRepositoryImpl implements UserRepository {
     @Autowired
@@ -21,6 +24,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public UserEntity findById(String userId) {
         return mongoTemplate.findById(userId, UserEntity.class);
+    }
+
+    @Override
+    public List<UserEntity> findByIds(Set<String> userIds) {
+        Query query = Query.query(Criteria.where("id").in(userIds));
+        return mongoTemplate.find(query, UserEntity.class);
     }
 
     @Override
