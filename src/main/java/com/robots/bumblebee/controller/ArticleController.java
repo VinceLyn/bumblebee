@@ -1,7 +1,6 @@
 package com.robots.bumblebee.controller;
 
 import com.google.common.collect.Lists;
-import com.robots.bumblebee.entity.db.User;
 import com.robots.bumblebee.entity.request.Article;
 import com.robots.bumblebee.entity.vo.ArticleVO;
 import com.robots.bumblebee.entity.vo.SimpleUserVO;
@@ -67,8 +66,9 @@ public class ArticleController {
             @ApiImplicitParam(name = "id", value = "转发帖子的id", required = true, dataType = "String"),
             @ApiImplicitParam(name = "text", value = "正文内容", required = true, dataType = "String")
     })
-    public ResponseEntity<String> repost(String id, String text) {
-        articleService.repost(id,text);
+    public ResponseEntity<String> repost(HttpServletRequest request, String id, String text) {
+        long curUserId = CurrentUserUtil.getCurUserId(request);
+        articleService.repost(id, text, curUserId);
         return ResponseEntity.ok("转发成功！");
     }
 
@@ -77,8 +77,9 @@ public class ArticleController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "被点赞帖子的id", required = true, dataType = "String"),
     })
-    public ResponseEntity<String> like(String id) {
-        articleService.like(id);
+    public ResponseEntity<String> like(HttpServletRequest request, @RequestParam(value = "id") String id) {
+        long curUserId = CurrentUserUtil.getCurUserId(request);
+        articleService.like(id, curUserId);
         return ResponseEntity.ok("点赞成功！");
     }
 
@@ -87,17 +88,18 @@ public class ArticleController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "被点赞帖子的id", required = true, dataType = "String"),
     })
-    public ResponseEntity<String> unlike(String id) {
-        articleService.unlike(id);
-        return ResponseEntity.ok("点赞成功！");
+    public ResponseEntity<String> unlike(HttpServletRequest request, @RequestParam(value = "id") String id) {
+        long curUserId = CurrentUserUtil.getCurUserId(request);
+        articleService.unlike(id, curUserId);
+        return ResponseEntity.ok("已取消点赞！");
     }
 
     @PostMapping("get_likes")
-    @ApiOperation(value = "取消点赞")
+    @ApiOperation(value = "获取该帖子的点赞的用戶列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "被点赞帖子的id", required = true, dataType = "String"),
     })
-    public ResponseEntity<List<SimpleUserVO>> getLikes(String id) {
+    public ResponseEntity<List<SimpleUserVO>> getLikes(@RequestParam(value = "id") String id) {
         return ResponseEntity.ok(articleService.getLikes(id));
     }
 

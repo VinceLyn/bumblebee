@@ -4,17 +4,16 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.util.List;
+import javax.persistence.Id;
+import java.util.Set;
 
 
 @Document("likeEntity")
 @Data
 public class LikeEntity {
 
-    @MongoId(value = FieldType.OBJECT_ID)
+    @Id
     private String id;
 
     /**
@@ -27,6 +26,6 @@ public class LikeEntity {
     /**
      * 该帖子被点赞的用户id
      */
-    @Field(value = "uids", targetType = FieldType.ARRAY)
-    private List<Long> uids;
+    @Field(value = "uids")
+    private Set<Long> uids;
 }

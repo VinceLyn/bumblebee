@@ -16,12 +16,12 @@ public interface ArticleService {
 
     void publishArticle(Article article);
 
-    void repost(String id, String text);
+    void repost(String sourceId, String text, long curUserId);
 
     List<SimpleUserVO> getLikes(String id);
 
-    void like(String id);
+    void like(String aid, long curUserId);
 
-    void unlike(String id);
+    void unlike(String aid, long curUserId);
 
 }

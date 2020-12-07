@@ -12,10 +12,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * @author yichengdong
- * @date 2020/12/4
- */
 class ArticleRepositoryTest extends BaseTest {
 
     @Autowired

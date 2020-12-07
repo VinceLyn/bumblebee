@@ -54,4 +54,5 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         return mongoTemplate.find(query, ArticleEntity.class);
     }
 
+
 }

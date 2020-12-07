@@ -1,6 +1,6 @@
 package com.robots.bumblebee.repository.impl;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mongodb.client.result.UpdateResult;
 import com.robots.bumblebee.entity.db.LikeEntity;
 import com.robots.bumblebee.repository.LikeRepository;
@@ -18,44 +18,40 @@ public class LikeRepositoryImpl implements LikeRepository {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public void like(String aid, long uid) {
+    public void updateOrInsert(String aid, long uid) {
         Query query = new Query();
         query.addCriteria(Criteria.where("aid").is(aid));
         Update update = new Update();
         update.addToSet("uids", uid);
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, LikeEntity.class);
-        if (updateResult.getMatchedCount() < 0) {
-            LikeEntity e = new LikeEntity();
-            e.setAid(aid);
-            e.setUids(Lists.newArrayList(uid));
-            LikeEntity entity = mongoTemplate.save(e);
-            if (entity == null) {
-                mongoTemplate.updateFirst(query, update, LikeEntity.class)
-            }
+        if (updateResult.getMatchedCount() == 0) {
+            LikeEntity entity = new LikeEntity();
+            entity.setAid(aid);
+            entity.setUids(Sets.newHashSet(uid));
+            mongoTemplate.save(entity);
         }
     }
 
     @Override
-    public void unLike(String aid, long uid) {
+    public void update(String aid, long uid) {
         Query query = new Query();
         query.addCriteria(Criteria.where("aid").is(aid));
-        Update update = new Update();update
-        update.push("uids", uid);
+        Update update = new Update();
+        update.pull("uids", uid);
         mongoTemplate.updateFirst(query, update, LikeEntity.class);
     }
 
     @Override
-    public boolean isLike(String aid, long uid) {
+    public boolean isExist(String aid, long uid) {
         Query query = new Query();
         query.addCriteria(Criteria.where("aid").is(aid));
-        query.addCriteria(Criteria.where("uids").elemMatch(Criteria.where("")));
-        mongoTemplate.count(query,)
-        return false;
+        query.addCriteria(Criteria.where("uids").in(uid));
+        long count = mongoTemplate.count(query, LikeEntity.class);
+        return count > 0;
     }
 
     @Override
     public LikeEntity findByAid(String aid) {
-        LikeEntity likeEntityList = mongoTemplate.findOne(Query.query(Criteria.where("aid").is(aid)), LikeEntity.class);
-        return likeEntityList;
+        return mongoTemplate.findOne(Query.query(Criteria.where("aid").is(aid)), LikeEntity.class);
     }
 }
