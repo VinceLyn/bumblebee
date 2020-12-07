@@ -1,13 +1,11 @@
 package com.robots.bumblebee.service;
 
 import com.robots.bumblebee.BaseTest;
-import com.robots.bumblebee.entity.db.User;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
+import com.robots.bumblebee.entity.db.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class UserServiceTest extends BaseTest {
 
@@ -16,8 +14,8 @@ class UserServiceTest extends BaseTest {
 
     @Test
     void getUser() {
-        User user = userService.getUser(1L);
-        assertNotNull(user);
+        UserEntity userEntity = userService.getUser("1212");
+        assertNotNull(userEntity);
     }
 
     @Test

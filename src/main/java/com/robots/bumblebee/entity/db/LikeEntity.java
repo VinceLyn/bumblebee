@@ -27,5 +27,5 @@ public class LikeEntity {
      * 该帖子被点赞的用户id
      */
     @Field(value = "uids")
-    private Set<Long> uids;
+    private Set<String> uids;
 }

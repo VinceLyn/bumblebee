@@ -4,10 +4,9 @@ package com.robots.bumblebee.entity.db;
 import lombok.Data;
 import org.dom4j.tree.AbstractEntity;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.data.mongodb.core.mapping.*;
+
+import java.util.List;
 
 @Document("articleEntity")
 @Data
@@ -15,9 +14,6 @@ public class ArticleEntity extends AbstractEntity {
 
     @MongoId(value = FieldType.OBJECT_ID)
     private String id;
-
-    @Field("uid")
-    private long uid;
 
     @Field("title")
     private String title;
@@ -34,7 +30,8 @@ public class ArticleEntity extends AbstractEntity {
     @CreatedDate
     private long ctime;
 
-    @Field("context")
-    private String context;
-
+    @DBRef
+    private UserEntity user;
+    @Field("likes")
+    private List<String> likes;
 }

@@ -16,21 +16,21 @@ class LikeRepositoryTest extends BaseTest {
     @Test
     void like() {
         String aid = "5fcd95913803f1218c431c61111";
-        long uid = 1;
+        String uid = "1";
         likeRepository.updateOrInsert(aid,uid);
     }
 
     @Test
     void unLike() {
         String aid = "11111";
-        long uid = 2;
+        String uid = "2";
         likeRepository.update(aid,uid);
     }
 
     @Test
     void isLike() {
         String aid = "5fcd95913803f1218c431c6e";
-        long uid = 100;
+        String uid = "100";
         boolean like = likeRepository.isExist(aid, uid);
         assertTrue(like);
     }

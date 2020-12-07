@@ -1,6 +1,7 @@
 package com.robots.bumblebee.controller;
 
 import com.google.common.collect.Lists;
+import com.robots.bumblebee.entity.db.UserEntity;
 import com.robots.bumblebee.entity.request.Article;
 import com.robots.bumblebee.entity.vo.ArticleVO;
 import com.robots.bumblebee.entity.vo.SimpleUserVO;
@@ -36,7 +37,7 @@ public class ArticleController {
     })
     public ResponseEntity<List<ArticleVO>> getArticles(@RequestParam(value = "pageNum") Integer pageNum,
                                                        @RequestParam(value = "pageSize") Integer pageSize) {
-        List<Long> uidList = Lists.newArrayList();
+        List<String> uidList = Lists.newArrayList();
         List<ArticleVO> articleVOList = articleService.getArticles(pageNum, pageSize, uidList);
         return ResponseEntity.ok(articleVOList);
     }
@@ -54,9 +55,8 @@ public class ArticleController {
     @PostMapping("publish_article")
     @ApiOperation(value = "发布帖子")
     public ResponseEntity<String> publishArticle(HttpServletRequest request, Article article) {
-        long curUserId = CurrentUserUtil.getCurUserId(request);
-        article.setUserId(curUserId);
-        articleService.publishArticle(article);
+        UserEntity curUserEntity = CurrentUserUtil.getCurUser(request);
+        articleService.publishArticle(article, curUserEntity);
         return ResponseEntity.ok("发布成功！");
     }
 
@@ -67,8 +67,8 @@ public class ArticleController {
             @ApiImplicitParam(name = "text", value = "正文内容", required = true, dataType = "String")
     })
     public ResponseEntity<String> repost(HttpServletRequest request, String id, String text) {
-        long curUserId = CurrentUserUtil.getCurUserId(request);
-        articleService.repost(id, text, curUserId);
+        UserEntity curUserEntity = CurrentUserUtil.getCurUser(request);
+        articleService.repost(id, text, curUserEntity);
         return ResponseEntity.ok("转发成功！");
     }
 
@@ -78,7 +78,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "id", value = "被点赞帖子的id", required = true, dataType = "String"),
     })
     public ResponseEntity<String> like(HttpServletRequest request, @RequestParam(value = "id") String id) {
-        long curUserId = CurrentUserUtil.getCurUserId(request);
+        String curUserId = CurrentUserUtil.getCurUserId(request);
         articleService.like(id, curUserId);
         return ResponseEntity.ok("点赞成功！");
     }
@@ -89,7 +89,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "id", value = "被点赞帖子的id", required = true, dataType = "String"),
     })
     public ResponseEntity<String> unlike(HttpServletRequest request, @RequestParam(value = "id") String id) {
-        long curUserId = CurrentUserUtil.getCurUserId(request);
+        String curUserId = CurrentUserUtil.getCurUserId(request);
         articleService.unlike(id, curUserId);
         return ResponseEntity.ok("已取消点赞！");
     }

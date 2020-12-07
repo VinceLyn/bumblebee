@@ -8,19 +8,19 @@ import io.swagger.annotations.ApiModelProperty;
 public class SimpleUserVO {
 
     @ApiModelProperty(value = "用户id")
-    private long id;
+    private String id;
 
     @ApiModelProperty(value = "用戶账号")
     private String account;
 
     @ApiModelProperty(value = "用户头像地址")
-    private String userImageUrl;
+    private String icon;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -32,11 +32,11 @@ public class SimpleUserVO {
         this.account = account;
     }
 
-    public String getUserImageUrl() {
-        return userImageUrl;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setUserImageUrl(String userImageUrl) {
-        this.userImageUrl = userImageUrl;
+    public void setIcon(String userImageUrl) {
+        this.icon = icon;
     }
 }

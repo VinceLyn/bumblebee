@@ -9,13 +9,12 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class JWTService {
     private JWTVerifier verifier = JWT.require(Algorithm.HMAC256("sec9527")).withIssuer("server1").build();
 
-    public String createToken(Long account){
+    public String createToken(String account){
         String secret = "sec9527";
         Algorithm alg = Algorithm.HMAC256(secret);
         //头部信息

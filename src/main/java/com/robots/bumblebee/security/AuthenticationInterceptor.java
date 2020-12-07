@@ -3,7 +3,7 @@ package com.robots.bumblebee.security;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.common.base.Strings;
-import com.robots.bumblebee.entity.db.User;
+import com.robots.bumblebee.entity.db.UserEntity;
 import com.robots.bumblebee.login.JWTService;
 import com.robots.bumblebee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,12 +57,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         } catch (JWTVerificationException e) {
             throw new RuntimeException("401");
         }
-        long userId = decodedJWT.getClaim("account").asLong();
-        User user = userService.getUser(userId);
-        if (user == null) {
+        String userId = decodedJWT.getClaim("account").asString();
+        UserEntity userEntity = userService.getUser(userId);
+        if (userEntity == null) {
             throw new RuntimeException("用户不存在，请重新登录");
         }
-        httpServletRequest.setAttribute("user", user);
+        httpServletRequest.setAttribute("user", userEntity);
         return true;
     }
 

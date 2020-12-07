@@ -1,12 +1,12 @@
 package com.robots.bumblebee.service;
 
-import com.robots.bumblebee.entity.db.User;
+import com.robots.bumblebee.entity.db.UserEntity;
 
-public interface UserService {
+public interface UserService  {
 
-    User getUser(long id);
+    UserEntity getUser(String id);
 
-    User getUserByAccount(String account);
+    UserEntity getUserByAccount(String account);
 
-    void save(User user);
+    void save(UserEntity userEntity);
 }

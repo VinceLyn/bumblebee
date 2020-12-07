@@ -11,6 +11,6 @@ public interface ArticleRepository {
 
     ArticleEntity findById(String id);
 
-    List<ArticleEntity> findByPage(int pageNum, int pageSize, List<Long> uidList);
+    List<ArticleEntity> findByPage(int pageNum, int pageSize, List<String> uidList);
 
 }

@@ -1,6 +1,6 @@
 package com.robots.bumblebee.login;
 
-import com.robots.bumblebee.entity.db.User;
+import com.robots.bumblebee.entity.db.UserEntity;
 import com.robots.bumblebee.security.SkipToken;
 import com.robots.bumblebee.service.UserService;
 import io.swagger.annotations.Api;
@@ -30,25 +30,21 @@ public class LoginController{
     @ApiOperation(value = "注册")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "account", value = "账号", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "pwd", value = "密码", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "confirmPwd", value = "确认密码", required = true, dataType = "String")
+            @ApiImplicitParam(name = "pwd", value = "密码", required = true, dataType = "String")
     })
     @SkipToken(required = true)
     public ResponseEntity<String> register(@RequestParam(value = "account") String account,
-                                           @RequestParam(value = "pwd") String pwd,
-                                           @RequestParam(value = "confirmPwd") String confirmPwd) {
+                                           @RequestParam(value = "pwd") String pwd) {
         if(ObjectUtils.isEmpty(account)){
             return ResponseEntity.ok("账号不能为空");
         }
-        if(ObjectUtils.isEmpty(pwd) || ObjectUtils.isEmpty(confirmPwd)){
+        if(ObjectUtils.isEmpty(pwd)){
             return ResponseEntity.ok("密码不能空");
         }
-        if(!pwd.equals(confirmPwd)){
-            return ResponseEntity.ok("两次输入的密码不一致");
-        }
-        User user = new User();
-        user.setAccount(account);
-        userService.save(user);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setAccount(account);
+        userEntity.setPwd(pwd);
+        userService.save(userEntity);
         return ResponseEntity.ok("注册成功");
     }
 
@@ -60,11 +56,14 @@ public class LoginController{
     @GetMapping("login")
     @SkipToken(required = true)
     public ResponseEntity<String> login(@RequestParam(value = "account") String account, @RequestParam(value = "pwd") String pwd) {
-        User user = userService.getUserByAccount(account);
-        if(user == null){
+        UserEntity userEntity = userService.getUserByAccount(account);
+        if(userEntity == null){
             return ResponseEntity.ok("用戶不存在！");
         }
-        String token = jwtService.createToken(user.getId());
+        if(!userEntity.getPwd().equalsIgnoreCase(pwd)){
+            return ResponseEntity.ok("密码错误！");
+        }
+        String token = jwtService.createToken(userEntity.getId());
         return ResponseEntity.ok(token);
     }
 

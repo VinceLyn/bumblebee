@@ -29,7 +29,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public List<ArticleEntity> findByPage(int pageNum, int pageSize, List<Long> uidList) {
+    public List<ArticleEntity> findByPage(int pageNum, int pageSize, List<String> uidList) {
 
         Query query = new Query();
         Criteria criteria = new Criteria();

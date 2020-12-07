@@ -3,14 +3,13 @@ package com.robots.bumblebee.repository;
 import com.robots.bumblebee.BaseTest;
 import com.robots.bumblebee.entity.db.ArticleEntity;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ArticleRepositoryTest extends BaseTest {
 
@@ -20,7 +19,7 @@ class ArticleRepositoryTest extends BaseTest {
     @Test
     void save() {
         ArticleEntity entity = new ArticleEntity();
-        entity.setUid(12L);
+        entity.setUid("asdqw");
         entity.setTitle("test");
         entity.setText("text");
         articleRepository.save(entity);

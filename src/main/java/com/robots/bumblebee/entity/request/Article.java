@@ -13,10 +13,6 @@ public class Article {
     @ApiModelProperty(value = "正文内容",required = true)
     private String text;
 
-    @ApiModelProperty(hidden = true)
-    private long userId;
-
-
     public String getTitle() {
         return title;
     }
@@ -31,13 +27,5 @@ public class Article {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
     }
 }

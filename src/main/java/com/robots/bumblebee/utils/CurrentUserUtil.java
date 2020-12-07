@@ -1,6 +1,6 @@
 package com.robots.bumblebee.utils;
 
-import com.robots.bumblebee.entity.db.User;
+import com.robots.bumblebee.entity.db.UserEntity;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,17 +8,17 @@ public class CurrentUserUtil {
 
     private CurrentUserUtil(){}
 
-    public static long getCurUserId(HttpServletRequest httpServletRequest) {
-        User currentUser = getCurUser(httpServletRequest);
-        return currentUser.getId();
+    public static String getCurUserId(HttpServletRequest httpServletRequest) {
+        UserEntity currentUserEntity = getCurUser(httpServletRequest);
+        return currentUserEntity.getId();
     }
 
-    public static User getCurUser(HttpServletRequest httpServletRequest){
-        User currentUser = (User) httpServletRequest.getAttribute("user");
-        if(currentUser == null){
+    public static UserEntity getCurUser(HttpServletRequest httpServletRequest){
+        UserEntity currentUserEntity = (UserEntity) httpServletRequest.getAttribute("user");
+        if(currentUserEntity == null){
             throw new RuntimeException("HttpServletRequest中不存在当前用户信息");
         }
-        return currentUser;
+        return currentUserEntity;
     }
 
 

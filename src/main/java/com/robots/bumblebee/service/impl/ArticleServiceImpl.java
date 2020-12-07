@@ -3,7 +3,7 @@ package com.robots.bumblebee.service.impl;
 import com.google.common.collect.Lists;
 import com.robots.bumblebee.entity.db.ArticleEntity;
 import com.robots.bumblebee.entity.db.LikeEntity;
-import com.robots.bumblebee.entity.db.User;
+import com.robots.bumblebee.entity.db.UserEntity;
 import com.robots.bumblebee.entity.request.Article;
 import com.robots.bumblebee.entity.vo.ArticleVO;
 import com.robots.bumblebee.entity.vo.SimpleUserVO;
@@ -31,7 +31,7 @@ public class ArticleServiceImpl implements ArticleService {
     private UserService userService;
 
     @Override
-    public List<ArticleVO> getArticles(Integer pageNum, Integer pageSize, List<Long> uidList) {
+    public List<ArticleVO> getArticles(Integer pageNum, Integer pageSize, List<String> uidList) {
         List<ArticleEntity> articleEntities = articleRepository.findByPage(pageNum, pageSize, uidList);
         List<ArticleVO> articleVOList = Lists.newArrayList();
         articleEntities.forEach(entity -> {
@@ -49,42 +49,38 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleVO assembleArticleVO(ArticleEntity entity) {
         ArticleVO articleVO = new ArticleVO();
         BeanUtils.copyProperties(entity, articleVO);
-        User user = userService.getUser(entity.getUid());
         SimpleUserVO simpleUserVO = new SimpleUserVO();
-        BeanUtils.copyProperties(user, simpleUserVO);
+        BeanUtils.copyProperties(entity.getUser(), simpleUserVO);
         articleVO.setSimpleUserVO(simpleUserVO);
-        BeanUtils.copyProperties(entity, articleVO);
         return articleVO;
     }
 
     @Override
-    public void publishArticle(Article article) {
+    public void publishArticle(Article article, UserEntity userEntity) {
         ArticleEntity entity = new ArticleEntity();
         entity.setTitle(article.getTitle());
         entity.setText(article.getText());
-        entity.setUid(article.getUserId());
         entity.setSid(null);//发布时没有来源id
-        entity.setCtime(System.currentTimeMillis());
+        entity.setUser(userEntity);
         articleRepository.save(entity);
     }
 
     @Override
-    public void repost(String sourceId, String text, long curUserId) {
+    public void repost(String sourceId, String text, UserEntity userEntity) {
         ArticleEntity entity = new ArticleEntity();
         entity.setText(text);
-        entity.setUid(curUserId);
         entity.setSid(sourceId);//发布时没有来源id
-        entity.setCtime(System.currentTimeMillis());
+        entity.setUser(userEntity);
         articleRepository.save(entity);
     }
 
     @Override
     public List<SimpleUserVO> getLikes(String id) {
         LikeEntity likeEntity = likeRepository.findByAid(id);
-        Set<Long> userIdSet = likeEntity.getUids();
+        Set<String> userIdSet = likeEntity.getUids();
         List<SimpleUserVO> simpleUserVOList = Lists.newArrayList();
         userIdSet.forEach(userId -> {
-            User user = userService.getUser(userId);
+            UserEntity user = userService.getUser(userId);
             SimpleUserVO simpleUserVO = new SimpleUserVO();
             BeanUtils.copyProperties(user, simpleUserVO);
             simpleUserVOList.add(simpleUserVO);
@@ -93,12 +89,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void like(String aid, long curUserId) {
+    public void like(String aid, String curUserId) {
         likeRepository.updateOrInsert(aid, curUserId);
     }
 
     @Override
-    public void unlike(String aid, long curUserId) {
+    public void unlike(String aid, String curUserId) {
         likeRepository.update(aid, curUserId);
     }
 }
