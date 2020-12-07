@@ -31,7 +31,10 @@ public class ArticleEntity extends AbstractEntity {
     @Field("sid")
     private String sid;
 
-    @Field("ctime")
+    @CreatedDate
     private long ctime;
+
+    @Field("context")
+    private String context;
 
 }

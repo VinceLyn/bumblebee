@@ -1,6 +1,7 @@
 package com.robots.bumblebee.entity.db;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -20,7 +21,8 @@ public class LikeEntity {
      * 帖子的id
      */
     @Field("aid")
-    private long aid;
+    @Indexed(unique = true)
+    private String aid;
 
     /**
      * 该帖子被点赞的用户id
